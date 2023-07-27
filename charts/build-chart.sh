@@ -24,7 +24,6 @@ gunzip ${CHART_TMP}
 
 # Extract out Chart.yaml, inject a version requirement and bundle-id annotation, and delete/replace the one in the original tarball
 tar -xOf ${CHART_TMP/.gz/} ${CHART_NAME}/Chart.yaml > ${YAML_TMP}
-yq -i e ".kubeVersion = \">= ${KUBERNETES_VERSION}\" | .annotations.\"fleet.cattle.io/bundle-id\" = \"rke2\"" ${YAML_TMP}
 tar --delete -b 8192 -f ${CHART_TMP/.gz/} ${CHART_NAME}/Chart.yaml
 tar --transform="s|.*|${CHART_NAME}/Chart.yaml|" ${TAR_OPTS} -vrf ${CHART_TMP/.gz/} ${YAML_TMP}
 
